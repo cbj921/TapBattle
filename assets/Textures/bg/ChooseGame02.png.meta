@@ -1,0 +1,32 @@
+{
+  "ver": "2.3.1",
+  "uuid": "bf793dee-557d-4c43-b6fe-66ff444be4ff",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "platformSettings": {},
+  "subMetas": {
+    "ChooseGame02": {
+      "ver": "1.0.4",
+      "uuid": "4e016c43-7eff-43a0-9266-8ad1a553953a",
+      "rawTextureUuid": "bf793dee-557d-4c43-b6fe-66ff444be4ff",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 20,
+      "offsetY": 43,
+      "trimX": 40,
+      "trimY": 0,
+      "width": 216,
+      "height": 170,
+      "rawWidth": 256,
+      "rawHeight": 256,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

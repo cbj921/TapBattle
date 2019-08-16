@@ -1,0 +1,32 @@
+{
+  "ver": "2.3.1",
+  "uuid": "b6345cf2-75b2-4eb8-b0cc-50d6618a1b89",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "platformSettings": {},
+  "subMetas": {
+    "PinBall_BoardCollide_2": {
+      "ver": "1.0.4",
+      "uuid": "734a1df7-8011-40bd-85d6-25e8d817d09e",
+      "rawTextureUuid": "b6345cf2-75b2-4eb8-b0cc-50d6618a1b89",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": -0.5,
+      "trimX": 2,
+      "trimY": 3,
+      "width": 124,
+      "height": 123,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

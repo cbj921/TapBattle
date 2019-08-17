@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-16 20:10:08
- * @LastEditTime: 2019-08-17 11:18:46
+ * @LastEditTime: 2019-08-17 22:16:42
  * @LastEditors: Please set LastEditors
  */
 
@@ -40,6 +40,8 @@ cc.Class({
         numLabelNode:cc.Node,
         redNumLabel:cc.Label,
         blueNumLabel:cc.Label,
+        // 游戏结束的节点
+        gameOverNode:cc.Node,
         // 游戏开始标志
         _startFlag: false,
         // 触摸标志位
@@ -62,6 +64,8 @@ cc.Class({
         this.cordonNode.active = false;
         // 隐藏点击数
         this.numLabelNode.active = false;
+        // 监听playAgain事件
+        cc.director.on('backMenu',this.backMenu,this);
     },
 
     startGame() {
@@ -91,11 +95,23 @@ cc.Class({
         this.redUi.runAction(seqMoveRight);
         this.blueUi.runAction(seqMoveLeft);
     },
+    //redUI 和 blueUI 归位动画
+    showUi(){
+        let moveRight = cc.moveBy(this.uiHideDuration, cc.v2(800, 0)).easing(cc.easeCubicActionOut());
+        let moveLeft = cc.moveBy(this.uiHideDuration, cc.v2(-800, 0)).easing(cc.easeCubicActionOut());
+        this.redUi.runAction(moveLeft);
+        this.blueUi.runAction(moveRight);
+    },
 
     // 展示主角
     showPlayer(node) {
         // 显示警戒线
         this.cordonNode.active = true;
+        // 初始化角色的sprite
+        let redSprite = this.redPlayer.getComponent(cc.Sprite);
+        let blueSprite = this.bluePlayer.getComponent(cc.Sprite);
+        redSprite.spriteFrame = this.redSpriteFrame[0];
+        blueSprite.spriteFrame = this.blueSpriteFrame[0];
         // 播放入场
         let moveToStart = cc.moveTo(this.showDuration, cc.v2(0, 0)).easing(cc.easeCubicActionOut());
         node.runAction(moveToStart);
@@ -113,6 +129,7 @@ cc.Class({
                 this.addTouchListen();
                 this.countSprite.scheduleOnce(() => {
                     this.countSprite.node.active = false;
+                    this._spriteIndex = 0;
                 }, 0.5);
             }
         }, 1, 3);
@@ -161,12 +178,21 @@ cc.Class({
     judgeWiner() {
         if (this.playerNode.y >= 500) {
             this.removeTouchListen();
-            // TODO: 弹出结算界面
-            cc.log('red win');
+            // 弹出结算界面
+            this.gameOverNode.getComponent('gameOver').showMenu();
+            this.gameOverNode.getComponent('gameOver').changeWinerText('Red Win !');
+            this.gameOverNode.getComponent('gameOver').changeNodeColor('red');
+            // TODO: 保存胜局数进存储
+            // ....
+            
         } else if (this.playerNode.y <= -500) {
             this.removeTouchListen();
-            // TODO: 弹出结算界面
-            cc.log('blue win');
+            // 弹出结算界面
+            this.gameOverNode.getComponent('gameOver').showMenu();
+            this.gameOverNode.getComponent('gameOver').changeWinerText('Blue Win !');
+            this.gameOverNode.getComponent('gameOver').changeNodeColor('blue');
+            // TODO: 保存胜局数进存储
+            // ....
         }
         // 判断距离来更换spriteFrame
         if ((!this._changeFlag) && (this.playerNode.y >= 200 || this.playerNode.y <= -200)) {
@@ -185,17 +211,22 @@ cc.Class({
         }
     },
 
-
-    update(dt) {
-        /*if(this._startFlag){
-            if(this._redTouchFlag){
-                this._redTouchFlag = false;
-                this.playerNode.y += dt*this.deltaMove; 
-            }
-            if(this._blueTouchFlag){
-                this._blueTouchFlag = false;
-                this.playerNode.y -= dt*this.deltaMove; 
-            }
-        }*/
+    backMenu(){
+        this.gameOverNode.getComponent('gameOver').hideMenu();
+        // 归位playerNode
+        this.playerNode.position = cc.v2(0,0);
+        // 初始化角色位置
+        this.redPlayer.position = cc.v2(0, -2300);
+        this.bluePlayer.position = cc.v2(0, 2300);
+        // 显示开始按钮
+        this.startBtn.active = true;
+        // 隐藏警戒线
+        this.cordonNode.active = false;
+        // 隐藏点击数
+        this.numLabelNode.active = false;
+        // redUI 和 blueUI 归位动画
+        this.showUi();
     },
+    
+
 });

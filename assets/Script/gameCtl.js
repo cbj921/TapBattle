@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-16 20:10:08
- * @LastEditTime: 2019-08-17 22:16:42
+ * @LastEditTime: 2019-08-18 15:19:18
  * @LastEditors: Please set LastEditors
  */
 
@@ -11,6 +11,8 @@ cc.Class({
 
     properties: {
         canvas: cc.Node,
+        // title节点
+        titleNode:cc.Node,
         // UI
         redUi: cc.Node,
         blueUi: cc.Node,
@@ -66,10 +68,14 @@ cc.Class({
         this.numLabelNode.active = false;
         // 监听playAgain事件
         cc.director.on('backMenu',this.backMenu,this);
+        // 播放动画
+        this.playerAnim();
     },
 
     startGame() {
         this._startFlag = true;
+        // 隐藏标题
+        this.titleNode.active = false;
         // 显示点击数并且初始化
         this.numLabelNode.active = true;
         this.redNumLabel.string = 0;
@@ -77,6 +83,8 @@ cc.Class({
         // 按顺序执行流程
         let startAction = cc.sequence(cc.callFunc(this.hideUi, this), cc.callFunc(this.countDown, this));
         this.canvas.runAction(startAction);
+        // 向全局发送游戏开始事件
+        cc.director.emit('startGame');
     },
 
     // 隐藏UI
@@ -224,9 +232,18 @@ cc.Class({
         this.cordonNode.active = false;
         // 隐藏点击数
         this.numLabelNode.active = false;
+        // 显示标题
+        this.titleNode.active = true;
         // redUI 和 blueUI 归位动画
         this.showUi();
     },
     
+    // 角色动画
+    playerAnim(){
+        let redAction = cc.repeatForever(cc.sequence(cc.moveBy(1,cc.v2(0,50)),cc.moveBy(1,cc.v2(0,-50))));
+        let blueAction = cc.repeatForever(cc.sequence(cc.moveBy(1,cc.v2(0,-50)),cc.moveBy(1,cc.v2(0,50))));
+        this.redUi.getChildByName('red').runAction(redAction);
+        this.blueUi.getChildByName('blue').runAction(blueAction);
+    },
 
 });
